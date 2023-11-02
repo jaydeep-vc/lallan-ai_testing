@@ -36,6 +36,15 @@ jobs:
       - name: Create a zip file
         run: zip -r app.zip .
 
+      - name: Check if app.zip exists
+        run: |
+          if [ -f app.zip ]; then
+            unzip -o app.zip
+            rm -rf app.zip
+          else
+            echo "app.zip not found"
+          fi
+
       - name: List files and current directory
         run: |
           ls -lah
