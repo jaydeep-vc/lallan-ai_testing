@@ -46,15 +46,15 @@ jobs:
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.KEY }}
           local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing/'
+          remote_path: '/var/www/lallan-ai_testing'
 
       - name: Unzip the file on the server
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && sudo unzip -o app.zip"
+          sudo ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && unzip app.zip"
       
       - name: Remove the zip file on the server
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && sudo rm -rf app.zip"
+          sudo ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && rm -rf app.zip"
 
 
       - name: Executing remote SSH commands using SSH key
