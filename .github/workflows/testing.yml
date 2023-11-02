@@ -36,21 +36,23 @@ jobs:
       - name: Create a zip file
         run: zip -r app.zip .
 
-      - name: Check if app.zip exists
-        run: |
-          if [ -f app.zip ]; then
-            unzip -o app.zip
-            rm -rf app.zip
-          else
-            echo "app.zip not found"
-          fi
 
       - name: List files and current directory
         run: |
           ls -lah
           pwd
 
-      - name: Deploy .next to destination server
+      - name: Deploy app.zip to destination server via SFTP
+        uses: SamKirkland/SFTP-Deploy@4.0.2
+        with:
+          server: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          local: app.zip
+          remote: /var/www/lallan-ai_testing/app.zip
+
+
+      - name: Executing remote SSH commands using SSH key
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.HOST }}
@@ -61,7 +63,9 @@ jobs:
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
             rm -rf app.zip
-            rsync -av .next/ /var/www/lallan-ai_testing/.next/
+            source ~/.nvm/nvm.sh
+            nvm use v18.16.0
+            #npm install
             echo "--------------Before Restart-----------------"
             pm2 list
             pm2 restart 0
