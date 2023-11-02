@@ -42,15 +42,14 @@ jobs:
           ls -lah
           pwd
 
-      - name: Deploy app.zip to destination server
-        uses: bunyod545/SB.SftpDeployAction@v1.0
+      - name: SFTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.HOST }}
-          ssh_private_key: ${{ secrets.KEY }}
-          local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing'
-          args: '-o ConnectTimeout=5'
+          privateKey: ${{ secrets.KEY }}  # Use the SSH private key secret
+          serverDir: '/var/www/lallan-ai_testing'
+          localDir: './app.zip'
 
 
       - name: Executing remote SSH commands using SSH key
