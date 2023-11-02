@@ -1,0 +1,76 @@
+name: lallanai_test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.16.0]  # Update this to a supported Node.js version
+
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: |
+          echo "${{ secrets.ENV }}" > .env
+          echo ".env file loaded"
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Create a zip file
+        run: zip -r app.zip .
+
+      - name: List files and current directory
+        run: |
+          ls -lah
+          pwd
+      - name: Deploy .next to destination server
+        uses: bunyod545/SB.SftpDeployAction@v1.0
+        with:
+          username: ${{ secrets.USERNAME }}
+          server: ${{ secrets.HOST }}
+          ssh_private_key: ${{ secrets.KEY }}
+          local_path: '*'
+          remote_path: '/var/www/lallan-ai_testing/'
+
+      - name: Unzip the file on the server
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && sudo unzip -o app.zip"
+      
+      - name: Remove the zip file on the server
+        run: |
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && sudo rm -rf app.zip"
+
+
+      - name: Executing remote SSH commands using SSH key
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /var/www/lallan-ai_testing
+            source ~/.nvm/nvm.sh
+            nvm use v18.16.0
+            #npm install
+            echo "--------------Before Restart-----------------"
+            pm2 list
+            pm2 restart 0
+            echo "--------------After Restart------------------"
+            pm2 list
