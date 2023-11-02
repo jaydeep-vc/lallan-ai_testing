@@ -6,26 +6,17 @@ on:
       - master
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.16.0]  # Use a supported Node.js version (e.g., Node.js 14)
 
     steps:
       - name: Checkout latest code
         uses: actions/checkout@v2
 
-      - name: Create .env file
-        run: |
-          echo "${{ secrets.ENV }}" > .env
-          echo ".env file loaded"
-
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18  # Use a stable Node.js version
 
       - name: Install dependencies
         run: npm install
@@ -34,26 +25,14 @@ jobs:
         run: npm run build
 
       - name: Create a zip file
-        run: zip -r app.zip .
-
+        run: zip -r app.zip . -x "node_modules/*"  # Exclude node_modules
 
       - name: List files and current directory
         run: |
           ls -lah
           pwd
 
-      - name: Deploy .next to destination server
-        uses: bunyod545/SB.SftpDeployAction@v1.0
-        with:
-          username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.HOST }}
-          ssh_private_key: ${{ secrets.KEY }}
-          local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing'
-          args: '-o ConnectTimeout=5'
-
-      
-      - name: Executing remote SSH commands using SSH key
+      - name: Deploy to remote server
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.HOST }}
@@ -63,10 +42,10 @@ jobs:
           script: |
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
-            rm -rf app.zip
+            rm -f app.zip
             source ~/.nvm/nvm.sh
-            nvm use v18.16.0
-            #npm install
+            nvm use 18  # Use the same Node.js version as in the workflow
+            npm install  # If needed
             echo "--------------Before Restart-----------------"
             pm2 list
             pm2 restart 0
