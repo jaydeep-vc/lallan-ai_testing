@@ -58,7 +58,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /var/www/lallan-ai_testing
+            cd /var/www/temp
             unzip -o app.zip & rm -rf app.zip
             source ~/.nvm/nvm.sh
             nvm use v18.16.0
