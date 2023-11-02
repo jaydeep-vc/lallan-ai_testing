@@ -44,9 +44,15 @@ jobs:
 
       - name: Deploy app.zip to destination server
         run: |
-          rsync -av app.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/lallan-ai_testing/app.zip
+          # Store the host key in a known_hosts file
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+      
+          # Upload app.zip using rsync
+          rsync -av -e "ssh -i ${{ secrets.KEY }}" app.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/lallan-ai_testing/app.zip
         env:
           SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+
 
 
       - name: Executing remote SSH commands using SSH key
