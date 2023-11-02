@@ -42,13 +42,15 @@ jobs:
           pwd
 
       - name: Deploy .next to destination server
-        uses: github/sftp-deploy@4.1.0
+        uses: wzieba/ssh-scp-action@v6
         with:
-          server: ${{ secrets.HOST }}
+          host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.KEY }}
-          localDir: ./app.zip
-          remoteDir: /var/www/lallan-ai_testing
+          key: ${{ secrets.KEY }}
+          script: |
+            cd /var/www/lallan-ai_testing
+            scp -r app.zip ${{ secrets.USERNAME}}@${{ secrets.HOST }}:/var/www/lallan-ai_testing
+
       
 
       - name: Executing remote SSH commands using SSH key
