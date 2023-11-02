@@ -27,7 +27,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: npm install
+        run: npm i
 
       - name: Build the project
         run: npm run build
@@ -38,7 +38,7 @@ jobs:
       - name: List files and current directory
         run: |
           ls -lah
-          pwd
+          #pwd
       - name: Deploy .next to destination server
         uses: bunyod545/SB.SftpDeployAction@v1.0
         with:
@@ -46,7 +46,7 @@ jobs:
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.KEY }}
           local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing/'
+          remote_path: '/var/www/lallan-ai_testing'
           args: '-o ConnectTimeout=5'
 
       
