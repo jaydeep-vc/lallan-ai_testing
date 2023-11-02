@@ -42,16 +42,6 @@ jobs:
           pwd
 
       - name: Deploy .next to destination server
-        uses: w4rrior/ssh-deploy@v2
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing'
-          args: '-o ConnectTimeout=5'
-
-      - name: Executing remote SSH commands using SSH key
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.HOST }}
@@ -62,10 +52,6 @@ jobs:
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
             rm -rf app.zip
-            # Optionally switch to the Node.js version and install dependencies here
-            # source ~/.nvm/nvm.sh
-            # nvm use v18.16.0
-            # npm install
             echo "--------------Before Restart-----------------"
             pm2 list
             pm2 restart 0
