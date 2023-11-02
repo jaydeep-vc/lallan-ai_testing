@@ -47,18 +47,9 @@ jobs:
           ssh_private_key: ${{ secrets.KEY }}
           local_path: 'app.zip'
           remote_path: '/var/www/lallan-ai_testing'
+          args: '-o ConnectTimeout=5'
 
-      - name: Disable strict host key checking
-        run: echo "StrictHostKeyChecking no" >> ~/.ssh/config
-
-      - name: Unzip the file on the server
-        run: |
-          sudo ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && unzip -o app.zip"
       
-      - name: Remove the zip file on the server
-        run: |
-          sudo ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} -i ${{ secrets.KEY }} "cd /var/www/lallan-ai_testing && rm -rf app.zip"
-
       - name: Executing remote SSH commands using SSH key
         uses: appleboy/ssh-action@v0.1.8
         with:
@@ -68,6 +59,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /var/www/lallan-ai_testing
+            unzip -o app.zip & rm -rf app.zip
             source ~/.nvm/nvm.sh
             nvm use v18.16.0
             #npm install
