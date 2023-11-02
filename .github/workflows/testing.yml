@@ -42,12 +42,6 @@ jobs:
           pwd
 
       - name: Deploy .next to destination server
-        run: scp -r -i ${{ secrets.KEY }} app.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/lallan-ai_testing/
-
-
-      
-
-      - name: Executing remote SSH commands using SSH key
         uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.HOST }}
@@ -58,9 +52,7 @@ jobs:
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
             rm -rf app.zip
-            #source ~/.nvm/nvm.sh
-            #nvm use v18.16.0
-            #npm install
+            rsync -av .next/ /var/www/lallan-ai_testing/.next/
             echo "--------------Before Restart-----------------"
             pm2 list
             pm2 restart 0
