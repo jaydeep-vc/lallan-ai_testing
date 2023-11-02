@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.KEY }}
-          local_path: '*'
+          local_path: 'app.zip'
           remote_path: '/var/www/lallan-ai_testing/'
 
       - name: Unzip the file on the server
