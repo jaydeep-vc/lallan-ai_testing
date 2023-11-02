@@ -1,0 +1,51 @@
+{
+  "name": "lallan.ai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "dev:rebuild": "next lint && next build && next dev"
+  },
+  "dependencies": {
+    "@google-ai/generativelanguage": "^0.2.1",
+    "@hookform/resolvers": "^3.1.1",
+    "@supabase/auth-helpers-nextjs": "^0.7.3",
+    "@supabase/supabase-js": "^2.26.0",
+    "@types/node": "20.4.2",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "ai": "^2.2.1",
+    "autoprefixer": "^10.4.14",
+    "class-variance-authority": "^0.6.1",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
+    "google-auth-library": "^8.9.0",
+    "langchain": "^0.0.132",
+    "next": "^13.4.10",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^3.11.174",
+    "postcss": "^8.4.26",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.45.2",
+    "react-markdown": "^8.0.7",
+    "react-pdf": "^7.5.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "rehype-raw": "^7.0.0",
+    "remark-gfm": "^4.0.0",
+    "sass": "^1.63.6",
+    "tailwindcss": "^3.3.3",
+    "typescript": "5.1.6",
+    "web-streams-polyfill": "^3.2.1",
+    "yup": "^1.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "@types/react-syntax-highlighter": "^15.5.7",
+    "encoding": "^0.1.13",
+    "raw-loader": "^4.0.2"
+  }
+}
