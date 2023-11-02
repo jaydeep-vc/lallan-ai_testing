@@ -16,7 +16,7 @@ type Props = {
 export default function LoginPage({ searchParams }: Props) {
   return (
     <AuthLayoutContainer
-      heading="Welcome to Lallan.AI"
+      heading="Hello There! Welcome to Lallan.AI!"
       headingLabel="Login to your account and continue"
       formContainerClassName="mt-10 sm:mx-auto sm:w-full sm:max-w-lg"
     >
