@@ -42,14 +42,8 @@ jobs:
           pwd
 
       - name: Deploy .next to destination server
-        uses: wzieba/ssh-scp-action@v6
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          script: |
-            cd /var/www/lallan-ai_testing
-            scp -r app.zip ${{ secrets.USERNAME}}@${{ secrets.HOST }}:/var/www/lallan-ai_testing
+        run: scp -r -i ${{ secrets.KEY }} app.zip ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/var/www/lallan-ai_testing/
+
 
       
 
