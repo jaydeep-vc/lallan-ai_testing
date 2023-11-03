@@ -32,13 +32,13 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      - name: Create a zip file
-        run: zip -r app.zip .
+      #- name: Create a zip file
+       # run: zip -r app.zip .
 
       - name: List files and current directory
         run: |
           ls -lah
-          #pwd
+          pwd
           
       - name: Deploy .next to destination server
         uses: bunyod545/SB.SftpDeployAction@v1.0
@@ -46,8 +46,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.HOST }}
           ssh_private_key: ${{ secrets.KEY }}
-          local_path: 'app.zip'
-          remote_path: '/var/www/lallan-ai_testing'
+          local_path: '.next/*'
+          remote_path: '/var/www/lallan-ai_testing ./next'
           args: '-o ConnectTimeout=5'
 
       
@@ -60,12 +60,11 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /var/www/lallan-ai_testing
-            unzip -o app.zip
-            #rm -rf package-lock.json
-            rm -rf app.zip
+            #unzip -o app.zip
+            #rm -rf app.zip
             source ~/.nvm/nvm.sh
             nvm use v18.16.0
-            #npm install
+            npm install
             echo "--------------Before Restart-----------------"
             pm2 list
             pm2 restart 0
