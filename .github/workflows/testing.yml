@@ -32,8 +32,8 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      #- name: Create a zip file
-       # run: zip -r app.zip .
+      - name: Create a zip file
+        run: zip -r app.zip .
 
       - name: List files and current directory
         run: |
