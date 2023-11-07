@@ -61,9 +61,8 @@ jobs:
           script: |
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
-            rm -rf package-lock.json
             rm -rf app.zip
-            #source ~/.nvm/nvm.sh
+            source ~/.nvm/nvm.sh
             nvm use v18.16.0
             npm install
             echo "--------------Before Restart-----------------"
