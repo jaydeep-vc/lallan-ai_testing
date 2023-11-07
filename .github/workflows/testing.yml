@@ -37,8 +37,9 @@ jobs:
 
       - name: List files and current directory
         run: |
-          ls -lah
           pwd
+          ls -lah
+          
           
       - name: Deploy .next to destination server
         uses: bunyod545/SB.SftpDeployAction@v1.0
@@ -59,6 +60,7 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            npm install next
             cd /var/www/lallan-ai_testing
             unzip -o app.zip
             rm -rf app.zip
